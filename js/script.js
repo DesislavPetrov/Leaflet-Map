@@ -6,6 +6,8 @@ var popStadium;
 var controlZoom;
 var controlAttribute;
 var controlScale;
+var controlPan;
+var controlZoomSlider;
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
@@ -13,8 +15,15 @@ layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
 
 map.addLayer(layerOSM);
 
-controlZoom = L.control.zoom({zoomInText: "In", zoomOutText: "Out", position: "topright"});
-controlZoom.addTo(map);
+// controlZoom = L.control.zoom({zoomInText: "In", zoomOutText: "Out", position: "topright"});
+// controlZoom.addTo(map);
+
+controlPan = L.control.pan();
+controlPan.addTo(map);
+
+controlZoomSlider = L.control.zoomslider({position: "topright"});
+controlZoomSlider.addTo(map);
+
 
 controlAttribute = L.control.attribution({position: "bottomleft"});
 controlAttribute.addAttribution("<a href='http://geocadder.bg/en'>geocadder</a>");
