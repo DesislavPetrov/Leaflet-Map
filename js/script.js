@@ -25,7 +25,7 @@ controlPan.addTo(map);
 controlZoomSlider = L.control.zoomslider({position: "topright"});
 controlZoomSlider.addTo(map);
 
-controlEasyButton = L.easyButton('glyphicon-screenshot', function ()
+controlEasyButton = L.easyButton('glyphicon-play', function ()
     {
         map.locate();
     }
