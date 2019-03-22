@@ -25,6 +25,11 @@ controlPan.addTo(map);
 controlZoomSlider = L.control.zoomslider({position: "topright"});
 controlZoomSlider.addTo(map);
 
+controlEasyButton = L.easyButton('glyphicon-screenshot', function ()
+    {
+        map.locate();
+    }
+).addTo(map);
 
 controlAttribute = L.control.attribution({position: "bottomleft"});
 controlAttribute.addAttribution("<a href='http://geocadder.bg/en'>geocadder</a>");
