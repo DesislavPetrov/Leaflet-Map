@@ -8,6 +8,7 @@ var controlAttribute;
 var controlScale;
 var controlPan;
 var controlZoomSlider;
+var controlEasyButton;
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
