@@ -24,6 +24,7 @@
     <script src="src/Leaflet.EasyButton/easy-button.js"></script>
     <script src="src/leaflet-sidebar/L.Control.Sidebar.js"></script>
     <script src="src/leaflet-opencage-search/js/L.Control.OpenCageSearch.js"></script>
+    <script src="src/leaflet-providers/leaflet-providers.js"></script>
 </head>
 
 <body>
@@ -34,6 +35,8 @@
             <h4>Zoom Level: <span id="zoom-level"></span></h4>
             <h4>Map Center: <span id="map-center"></span></h4>
             <h4>Mouse Location: <span id="mouse-location"></span></h4>
+            <h4>Image Opacity: <span id="image-opacity">0.5</span></h4>
+            <input type="range" id="slideOpacity" min="0" max="1" step="0.1" value="0.5">
         </div>
         <div id="map" class="col-md-12"></div>
     </div>

@@ -1,5 +1,9 @@
 var map;
 var layerOSM;
+var layerWatercolor;
+var layerTopo;
+var layerImagery;
+var layerOutdoors;
 var markerCurrentLocation;
 var ll;
 var popStadium;
@@ -14,12 +18,41 @@ var controlEasyButton;
 var controlEasyButtonSidebar;
 var controlSidebar;
 var controlOpencageSearch;
+var controlLayer;
+var baseLayers;
+var overlayLayers;
+var imageOverlayLayer;
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
-layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+// layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+layerOSM = L.tileLayer.provider('OpenStreetMap.Mapnik');
+layerWatercolor = L.tileLayer.provider('Stamen.Watercolor');
+layerTopo = L.tileLayer.provider('OpenTopoMap');
+layerImagery = L.tileLayer.provider('Esri.WorldImagery');
+layerHydra = L.tileLayer.provider('Hydda.Full');
 
-map.addLayer(layerOSM);
+
+
+map.addLayer(layerOSM, imageOverlayLayer);
+
+baseLayers = {
+    "Open Street Maps": layerOSM,
+    "Watercolor": layerWatercolor,
+    "Topo Map": layerTopo,
+    "Imagery": layerImagery,
+    "Hydra": layerHydra
+};
+
+var imageUrl = '/img/1.PNG',
+    imageBounds = [[42.41883, 23.68115], [42.31081, 23.60302]];
+imageOverlayLayer = L.imageOverlay(imageUrl, imageBounds);
+
+overlayLayers = {
+    "Image Overlay": imageOverlayLayer
+};
+
+controlLayer = L.control.layers(baseLayers,  overlayLayers).addTo(map);
 
 // controlZoom = L.control.zoom({zoomInText: "In", zoomOutText: "Out", position: "topright"});
 // controlZoom.addTo(map);
@@ -119,6 +152,11 @@ $("#btnStadium").click(function(){
     map.setView([42.684146, 23.339908], 17);
     map.openPopup(popStadium);
 })
+
+$("#slideOpacity").on("change", function(){
+    $("#image-opacity").html(this.value);
+    imageOverlayLayer.setOpacity(this.value);
+});
 
 function LatLngToArrayString(ll){
     return "[" + ll.lat.toFixed(5) + ", "  + ll.lng.toFixed(5) + "]";
