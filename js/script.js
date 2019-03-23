@@ -8,6 +8,8 @@ var controlAttribute;
 var controlScale;
 var controlPan;
 var controlZoomSlider;
+var controlMousePosition;
+var controlPolylineMeasure;
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
@@ -24,13 +26,18 @@ controlPan.addTo(map);
 controlZoomSlider = L.control.zoomslider({position: "topright"});
 controlZoomSlider.addTo(map);
 
-
 controlAttribute = L.control.attribution({position: "bottomleft"});
 controlAttribute.addAttribution("<a href='http://geocadder.bg/en'>geocadder</a>");
 controlAttribute.addTo(map);
 
 controlScale = L.control.scale({position:  "bottomleft", imperial: false});
 controlScale.addTo(map);
+
+controlMousePosition = L.control.mousePosition();
+controlMousePosition.addTo(map);
+
+controlPolylineMeasure = L.control.polylineMeasure();
+controlPolylineMeasure.addTo(map);
 
 // map.on('click', function(e){
 //     if(e.originalEvent.shiftKey){
@@ -48,6 +55,10 @@ popStadium = L.popup({keepInView: true})
 map.on('contextmenu', function(e){
     L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
 })
+
+// map.on('contextmenu', function(e){
+//     console.log(e);
+// })
 
 map.on('keypress',function(e){
     if(e.originalEvent.key == "l"){
