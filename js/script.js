@@ -10,6 +10,10 @@ var controlPan;
 var controlZoomSlider;
 var controlMousePosition;
 var controlPolylineMeasure;
+var controlEasyButton;
+var controlEasyButtonSidebar;
+var controlSidebar;
+var controlOpencageSearch;
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
@@ -26,6 +30,10 @@ controlPan.addTo(map);
 controlZoomSlider = L.control.zoomslider({position: "topright"});
 controlZoomSlider.addTo(map);
 
+controlEasyButton = L.easyButton ("glyphicon-screenshot", function(){
+    map.locate();
+}).addTo(map);
+
 controlAttribute = L.control.attribution({position: "bottomleft"});
 controlAttribute.addAttribution("<a href='http://geocadder.bg/en'>geocadder</a>");
 controlAttribute.addTo(map);
@@ -38,6 +46,17 @@ controlMousePosition.addTo(map);
 
 controlPolylineMeasure = L.control.polylineMeasure();
 controlPolylineMeasure.addTo(map);
+
+controlSidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+});
+controlSidebar.addTo(map);
+
+controlEasyButtonSidebar = L.easyButton('glyphicon-transfer', function(){
+    controlSidebar.toggle();
+}).addTo(map);
+
+controlOpencageSearch = L.Control.openCageSearch({key: '1ecacf64368d4930bd6e4e6ceadba65c', limit: 10}).addTo(map);
 
 // map.on('click', function(e){
 //     if(e.originalEvent.shiftKey){
@@ -52,9 +71,9 @@ popStadium = L.popup({keepInView: true})
     .setLatLng([42.684146, 23.339908])
     .setContent("<h2>Bulgarian Army Stadium</h2> <img src='https://www.dnevnik.bg/shimg/zx860y484_3150587.jpg' width='300px'>");;
 
-map.on('contextmenu', function(e){
-    L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
-})
+// map.on('contextmenu', function(e){
+//     L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
+// })
 
 // map.on('contextmenu', function(e){
 //     console.log(e);
