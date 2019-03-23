@@ -8,8 +8,12 @@ var controlAttribute;
 var controlScale;
 var controlPan;
 var controlZoomSlider;
+<<<<<<< HEAD
 var controlMousePosition;
 var controlPolylineMeasure;
+=======
+var controlEasyButton;
+>>>>>>> ba6d4f54df9a2b6c3f43f2fcc9c60fc36a1a6ebb
 
 map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
 
