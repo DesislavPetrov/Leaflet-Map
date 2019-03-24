@@ -5,6 +5,7 @@ var layerTopo;
 var layerImagery;
 var layerOutdoors;
 var markerCurrentLocation;
+var markerMallBulgaria;
 var ll;
 var popStadium;
 var controlZoom;
@@ -23,7 +24,7 @@ var baseLayers;
 var overlayLayers;
 var imageOverlayLayer;
 
-map = L.map('map', {center:[ 42.337140, 23.553115], zoom: 12, zoomControl: false, attributionControl: false});
+map = L.map('map', {center:[42.663941, 23.288768], zoom: 12, zoomControl: false, attributionControl: false});
 
 // layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
 layerOSM = L.tileLayer.provider('OpenStreetMap.Mapnik');
@@ -104,9 +105,13 @@ popStadium = L.popup({keepInView: true})
     .setLatLng([42.684146, 23.339908])
     .setContent("<h2>Bulgarian Army Stadium</h2> <img src='https://www.dnevnik.bg/shimg/zx860y484_3150587.jpg' width='300px'>");;
 
-// map.on('contextmenu', function(e){
-//     L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
-// })
+
+markerMallBulgaria = L.marker([42.663941, 23.288768], {draggable: true}).addTo(map);
+markerMallBulgaria.bindTooltip("Mall Bulgaria");
+    
+map.on('contextmenu', function(e){
+    L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
+})
 
 // map.on('contextmenu', function(e){
 //     console.log(e);
@@ -144,6 +149,14 @@ map.on('mousemove', function(e){
     $("#mouse-location").html(LatLngToArrayString(e.latlng));
 })
 
+markerMallBulgaria.on('dragend', function(){
+    markerMallBulgaria.setTooltipContent("Current Location: " + markerMallBulgaria.getLatLng().toString() + "<br> Distance to Mall Bulgaria: " + markerMallBulgaria.getLatLng().distanceTo([42.663941, 23.288768]).toFixed(0) + " m");
+})
+
+// markerMallBulgaria.on('dragend', function(){
+//     this.setTooltipContent("Current Location: " + this.getLatLng());
+// })
+
 $("#btnLocate").click(function(){
     map.locate();
 })
@@ -151,6 +164,12 @@ $("#btnLocate").click(function(){
 $("#btnStadium").click(function(){
     map.setView([42.684146, 23.339908], 17);
     map.openPopup(popStadium);
+})
+
+$("#btnMall").click(function(){
+    map.setView([42.663941, 23.288768], 17);
+    markerMallBulgaria.setLatLng([42.663941, 23.288768]);
+    markerMallBulgaria.setTooltipContent("Mall Bulgaria");
 })
 
 $("#slideOpacity").on("change", function(){
