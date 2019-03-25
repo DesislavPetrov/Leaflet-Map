@@ -6,6 +6,7 @@ var layerImagery;
 var layerOutdoors;
 var markerCurrentLocation;
 var markerMallBulgaria;
+var mallToStadiumPath;
 var ll;
 var popStadium;
 var controlZoom;
@@ -108,7 +109,9 @@ popStadium = L.popup({keepInView: true})
 
 markerMallBulgaria = L.marker([42.663941, 23.288768], {draggable: true}).addTo(map);
 markerMallBulgaria.bindTooltip("Mall Bulgaria");
-    
+  
+mallToStadiumPath = L.polyline([[42.665156, 23.287756], [42.678493, 23.299017], [42.686415, 23.331007], [42.681853, 23.336322]]).addTo(map);
+
 map.on('contextmenu', function(e){
     L.marker(e.latlng).addTo(map).bindPopup(e.latlng.toString());
 })
