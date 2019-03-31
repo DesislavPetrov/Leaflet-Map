@@ -25,6 +25,11 @@ var baseLayers;
 var overlayLayers;
 var imageOverlayLayer;
 var polygonParks;
+var featureGroupMall;
+var featureGroupDrawnItems;
+var controlDraw;
+var controlStyle;
+
 
 map = L.map('map', {center:[42.663941, 23.288768], zoom: 12, zoomControl: false, attributionControl: false});
 
@@ -50,18 +55,30 @@ baseLayers = {
 };
 
 // the following four variables must be placed before overlayLayers
-markerMallBulgaria = L.marker([42.663941, 23.288768], {draggable: true}).addTo(map);
+
+// markerMallBulgaria = L.marker([42.663941, 23.288768], {draggable: true}).addTo(map);
+markerMallBulgaria = L.marker([42.663941, 23.288768], {draggable: true});
 markerMallBulgaria.bindTooltip("Mall Bulgaria");
   
-polygonParks = L.polygon([[[42.685516, 23.278999], [42.692147, 23.338916], [42.658874, 23.341233], [42.659443, 23.284065]], [[42.681543, 23.300232], [42.681969, 23.305125], [42.67991, 23.305468], [42.679468, 23.300371]]], {color: 'purple', fillColor: 'yellow', fillOpacity: 0.3}).addTo(map);
+// polygonParks = L.polygon([[[42.685516, 23.278999], [42.692147, 23.338916], [42.658874, 23.341233], [42.659443, 23.284065]], [[42.681543, 23.300232], [42.681969, 23.305125], [42.67991, 23.305468], [42.679468, 23.300371]]], {color: 'purple', fillColor: 'yellow', fillOpacity: 0.3}).addTo(map);
+polygonParks = L.polygon([[[42.685516, 23.278999], [42.692147, 23.338916], [42.658874, 23.341233], [42.659443, 23.284065]], [[42.681543, 23.300232], [42.681969, 23.305125], [42.67991, 23.305468], [42.679468, 23.300371]]], {color: 'purple', fillColor: 'yellow', fillOpacity: 0.3});
 
-mallToStadiumPath = L.polyline([[42.663941, 23.288768], [42.665156, 23.287756], [42.678493, 23.299017], [42.686415, 23.331007], [42.681853, 23.336322], [42.684121, 23.339645]], {color: 'red'}).addTo(map);
+// mallToStadiumPath = L.polyline([[42.663941, 23.288768], [42.665156, 23.287756], [42.678493, 23.299017], [42.686415, 23.331007], [42.681853, 23.336322], [42.684121, 23.339645]], {color: 'red'}).addTo(map);
+mallToStadiumPath = L.polyline([[42.663941, 23.288768], [42.665156, 23.287756], [42.678493, 23.299017], [42.686415, 23.331007], [42.681853, 23.336322], [42.684121, 23.339645]], {color: 'red'});
 
+featureGroupMall = L.featureGroup([polygonParks, mallToStadiumPath]).addTo(map);
+featureGroupDrawnItems = L.featureGroup().addTo(map);
+
+// overlayLayers = {
+//     "Image Overlay": imageOverlayLayer,
+//     "Mall": markerMallBulgaria,
+//     "Path to Stadium": mallToStadiumPath,
+//     "Parks": polygonParks
+// };
 overlayLayers = {
     "Image Overlay": imageOverlayLayer,
-    "Mall": markerMallBulgaria,
-    "Path to Stadium": mallToStadiumPath,
-    "Parks": polygonParks
+    "Mall Feature Group": featureGroupMall,
+    "Drawn Layers Feature Group": featureGroupDrawnItems
 };
 
 controlLayer = L.control.layers(baseLayers,  overlayLayers).addTo(map);
@@ -82,6 +99,23 @@ controlEasyButton = L.easyButton ("glyphicon-screenshot", function(){
 controlAttribute = L.control.attribution({position: "bottomleft"});
 controlAttribute.addAttribution("<a href='http://geocadder.bg/en'>geocadder</a>");
 controlAttribute.addTo(map);
+
+controlStyle = L.control.styleEditor({position: 'topright'}).addTo(map);
+
+controlDraw = new L.Control.Draw({
+    draw: {
+        circle:false
+    },
+    edit:{
+        featureGroup:featureGroupDrawnItems
+    }
+});
+controlDraw.addTo(map);
+
+map.on('draw:created', function(e){
+    console.log(e);
+    featureGroupDrawnItems.addLayer(e.layer);
+});
 
 controlScale = L.control.scale({position:  "bottomleft", imperial: false});
 controlScale.addTo(map);
@@ -186,6 +220,21 @@ $("#btnStadiumRoute").click(function(){
 $("#slideOpacity").on("change", function(){
     $("#image-opacity").html(this.value);
     imageOverlayLayer.setOpacity(this.value);
+});
+
+$("#btnColor").click(function(){
+    featureGroupMall.setStyle({color:"orange", fillColor:"green"});
+});
+
+
+$("#btnAddMallMarkerToFeatGroup").click(function(){
+    if(featureGroupMall.hasLayer(markerMallBulgaria)){
+        featureGroupMall.removeLayer(markerMallBulgaria);
+        $("#btnAddMallMarkerToFeatGroup").html("Add Mall to Feature Group");
+    } else {
+        featureGroupMall.addLayer(markerMallBulgaria);
+        $("#btnAddMallMarkerToFeatGroup").html("Remove Mall from Feature Group");
+    }    
 });
 
 function LatLngToArrayString(ll){
